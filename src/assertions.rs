@@ -460,6 +460,72 @@ impl Assertion for RefTargets {
     }
 }
 
+/// `<type>.<name>.<attr>` matches the regex pattern. Useful when the
+/// exact attribute value isn't stable (auto-generated suffix, region
+/// substitution) but the shape is.
+#[derive(Debug, Clone)]
+pub struct RegexMatches {
+    pub type_id: String,
+    pub name: String,
+    pub attr: String,
+    pub pattern: String,
+}
+
+impl RegexMatches {
+    #[must_use]
+    pub fn new(
+        type_id: impl Into<String>,
+        name: impl Into<String>,
+        attr: impl Into<String>,
+        pattern: impl Into<String>,
+    ) -> Self {
+        Self {
+            type_id: type_id.into(),
+            name: name.into(),
+            attr: attr.into(),
+            pattern: pattern.into(),
+        }
+    }
+}
+
+impl Assertion for RegexMatches {
+    fn check(&self, ctx: &AssertContext<'_>) -> Result<(), AssertionFailure> {
+        let pointer = format!(
+            "/resource/{}/{}/{}",
+            self.type_id, self.name, self.attr
+        );
+        let re = regex::Regex::new(&self.pattern).map_err(|e| {
+            AssertionFailure::new(format!("invalid regex `{}`: {e}", self.pattern))
+        })?;
+        let actual = ctx.terraform_json.pointer(&pointer);
+        match actual.and_then(|v| v.as_str()) {
+            Some(s) if re.is_match(s) => Ok(()),
+            Some(s) => Err(AssertionFailure::new(format!(
+                "`{}` did not match /{}/ on `{}.{}.{}`",
+                s, self.pattern, self.type_id, self.name, self.attr
+            ))
+            .at(pointer)),
+            None => Err(AssertionFailure::new(format!(
+                "attribute `{}.{}.{}` not present or not a string",
+                self.type_id, self.name, self.attr
+            ))
+            .at(pointer)),
+        }
+    }
+    fn describe(&self) -> String {
+        let mut s = String::from("regex-matches ");
+        s.push_str(&self.type_id);
+        s.push('.');
+        s.push_str(&self.name);
+        s.push('.');
+        s.push_str(&self.attr);
+        s.push_str(" /");
+        s.push_str(&self.pattern);
+        s.push('/');
+        s
+    }
+}
+
 /// Closure-based property assertion. The predicate runs against the
 /// terraform.json shape; failure surfaces a typed AssertionFailure
 /// with the operator-supplied label.
@@ -676,6 +742,35 @@ mod tests {
         let ctx = AssertContext::from_architecture(&arch).unwrap();
         let err = RefValid.check(&ctx).unwrap_err();
         assert!(err.message.contains("aws_subnet.does_not_exist"));
+    }
+
+    #[test]
+    fn regex_matches_passes_for_pattern_satisfying_value() {
+        let arch = tiny_vpc();
+        let ctx = AssertContext::from_architecture(&arch).unwrap();
+        let a =
+            RegexMatches::new("aws_vpc", "main", "cidr_block", r"^10\.\d+\.\d+\.\d+/\d+$");
+        assert!(a.check(&ctx).is_ok());
+    }
+
+    #[test]
+    fn regex_matches_fails_with_typed_pointer_on_mismatch() {
+        let arch = tiny_vpc();
+        let ctx = AssertContext::from_architecture(&arch).unwrap();
+        let a = RegexMatches::new("aws_vpc", "main", "cidr_block", r"^172\.");
+        let err = a.check(&ctx).unwrap_err();
+        assert!(err.message.contains("did not match"));
+        assert!(err.pointer.unwrap().contains("/cidr_block"));
+    }
+
+    #[test]
+    fn regex_matches_with_invalid_pattern_surfaces_typed_error() {
+        let arch = tiny_vpc();
+        let ctx = AssertContext::from_architecture(&arch).unwrap();
+        // [ is an invalid regex.
+        let a = RegexMatches::new("aws_vpc", "main", "cidr_block", "[");
+        let err = a.check(&ctx).unwrap_err();
+        assert!(err.message.contains("invalid regex"));
     }
 
     #[test]

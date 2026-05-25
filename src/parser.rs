@@ -30,7 +30,7 @@
 
 use crate::{
     Assertion, AttributeEquals, MinResourcesOfKind, NoResource, OutputEquals, RefTargets, RefValid,
-    ResourceCount, ResourceExists, TagEquals, TestCase,
+    RegexMatches, ResourceCount, ResourceExists, TagEquals, TestCase,
 };
 use indexmap::IndexMap;
 use lava_eval::{parse_all, Atom, ParseError, Sx};
@@ -276,6 +276,39 @@ fn parse_assertion(form: &Sx) -> Result<Box<dyn Assertion>, TestParseError> {
                     detail: "non-negative integer".into(),
                 })?;
             Ok(Box::new(MinResourcesOfKind::new(sym_to_type_id(type_id), n)))
+        }
+        "regex-matches" => {
+            // (regex-matches <type-id> "<name>" :<attr> "<pattern>")
+            let type_id = xs.get(1).and_then(Sx::as_sym).ok_or_else(|| {
+                TestParseError::InsufficientArgs {
+                    kind: "regex-matches".into(),
+                    detail: "need type-id at 1".into(),
+                }
+            })?;
+            let name = xs.get(2).and_then(Sx::as_str).ok_or_else(|| {
+                TestParseError::InsufficientArgs {
+                    kind: "regex-matches".into(),
+                    detail: "need \"name\" at 2".into(),
+                }
+            })?;
+            let attr_kw = xs.get(3).and_then(Sx::as_kw).ok_or_else(|| {
+                TestParseError::InsufficientArgs {
+                    kind: "regex-matches".into(),
+                    detail: "need :attr at 3".into(),
+                }
+            })?;
+            let pattern = xs.get(4).and_then(Sx::as_str).ok_or_else(|| {
+                TestParseError::InsufficientArgs {
+                    kind: "regex-matches".into(),
+                    detail: "need \"pattern\" at 4".into(),
+                }
+            })?;
+            Ok(Box::new(RegexMatches::new(
+                sym_to_type_id(type_id),
+                name,
+                attr_kw.replace('-', "_"),
+                pattern,
+            )))
         }
         "ref-targets" => {
             // (ref-targets <src-type> "<src-name>" :<src-attr>

@@ -22,3 +22,4 @@ indexmap = { version = "2", features = ["serde"] }
 thiserror = "2"
 lava-core = { git = "https://github.com/pleme-io/lava-core", branch = "main" }
 lava-eval = { git = "https://github.com/pleme-io/lava-eval", branch = "main" }
+regex = "1"
