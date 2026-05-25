@@ -29,8 +29,8 @@
 //! | `ref-valid`        | [`crate::RefValid`]           |
 
 use crate::{
-    Assertion, AttributeEquals, NoResource, OutputEquals, RefValid, ResourceCount, ResourceExists,
-    TestCase,
+    Assertion, AttributeEquals, MinResourcesOfKind, NoResource, OutputEquals, RefTargets, RefValid,
+    ResourceCount, ResourceExists, TagEquals, TestCase,
 };
 use indexmap::IndexMap;
 use lava_eval::{parse_all, Atom, ParseError, Sx};
@@ -218,6 +218,111 @@ fn parse_assertion(form: &Sx) -> Result<Box<dyn Assertion>, TestParseError> {
             Ok(Box::new(OutputEquals::new(name, sx_to_json(value_sx))))
         }
         "ref-valid" => Ok(Box::new(RefValid)),
+        "tag-equals" => {
+            // (tag-equals <type-id> "<name>" :<key> "<value>")
+            let type_id = xs
+                .get(1)
+                .and_then(Sx::as_sym)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "tag-equals".into(),
+                    detail: "need type-id".into(),
+                })?;
+            let name = xs
+                .get(2)
+                .and_then(Sx::as_str)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "tag-equals".into(),
+                    detail: "need \"name\"".into(),
+                })?;
+            let key = xs
+                .get(3)
+                .and_then(Sx::as_kw)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "tag-equals".into(),
+                    detail: "need :key".into(),
+                })?;
+            let expected = xs
+                .get(4)
+                .and_then(Sx::as_str)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "tag-equals".into(),
+                    detail: "need \"value\"".into(),
+                })?;
+            Ok(Box::new(TagEquals::new(
+                sym_to_type_id(type_id),
+                name,
+                key,
+                expected,
+            )))
+        }
+        "min-resources-of-kind" | "min-resources" => {
+            let type_id = xs
+                .get(1)
+                .and_then(Sx::as_sym)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "min-resources-of-kind".into(),
+                    detail: "need type-id".into(),
+                })?;
+            let n = xs
+                .get(2)
+                .and_then(Sx::as_int)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "min-resources-of-kind".into(),
+                    detail: "need integer".into(),
+                })?;
+            let n =
+                usize::try_from(n).map_err(|_| TestParseError::InsufficientArgs {
+                    kind: "min-resources-of-kind".into(),
+                    detail: "non-negative integer".into(),
+                })?;
+            Ok(Box::new(MinResourcesOfKind::new(sym_to_type_id(type_id), n)))
+        }
+        "ref-targets" => {
+            // (ref-targets <src-type> "<src-name>" :<src-attr>
+            //              <target-type> "<target-name>")
+            let src_type = xs
+                .get(1)
+                .and_then(Sx::as_sym)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "ref-targets".into(),
+                    detail: "need src-type at 1".into(),
+                })?;
+            let src_name = xs
+                .get(2)
+                .and_then(Sx::as_str)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "ref-targets".into(),
+                    detail: "need \"src-name\" at 2".into(),
+                })?;
+            let src_attr = xs
+                .get(3)
+                .and_then(Sx::as_kw)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "ref-targets".into(),
+                    detail: "need :src-attr at 3".into(),
+                })?;
+            let tgt_type = xs
+                .get(4)
+                .and_then(Sx::as_sym)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "ref-targets".into(),
+                    detail: "need target-type at 4".into(),
+                })?;
+            let tgt_name = xs
+                .get(5)
+                .and_then(Sx::as_str)
+                .ok_or_else(|| TestParseError::InsufficientArgs {
+                    kind: "ref-targets".into(),
+                    detail: "need \"target-name\" at 5".into(),
+                })?;
+            Ok(Box::new(RefTargets::new(
+                sym_to_type_id(src_type),
+                src_name,
+                src_attr,
+                sym_to_type_id(tgt_type),
+                tgt_name,
+            )))
+        }
         other => Err(TestParseError::UnknownAssertion(other.to_string())),
     }
 }

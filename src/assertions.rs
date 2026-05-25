@@ -269,6 +269,197 @@ impl Assertion for RefValid {
     }
 }
 
+/// `<type>.<name>.tags.<key>` contains the expected value. Useful for
+/// asserting a TrustBoundary or Service tag is applied across a fleet
+/// of resources.
+#[derive(Debug, Clone)]
+pub struct TagEquals {
+    pub type_id: String,
+    pub name: String,
+    pub key: String,
+    pub expected: String,
+}
+
+impl TagEquals {
+    #[must_use]
+    pub fn new(
+        type_id: impl Into<String>,
+        name: impl Into<String>,
+        key: impl Into<String>,
+        expected: impl Into<String>,
+    ) -> Self {
+        Self {
+            type_id: type_id.into(),
+            name: name.into(),
+            key: key.into(),
+            expected: expected.into(),
+        }
+    }
+}
+
+impl Assertion for TagEquals {
+    fn check(&self, ctx: &AssertContext<'_>) -> Result<(), AssertionFailure> {
+        let pointer = format!(
+            "/resource/{}/{}/tags/{}",
+            self.type_id, self.name, self.key
+        );
+        let actual = ctx.terraform_json.pointer(&pointer);
+        match actual.and_then(|v| v.as_str()) {
+            Some(v) if v == self.expected => Ok(()),
+            Some(v) => Err(AssertionFailure::new(format!(
+                "tag `{}={}` on `{}.{}` mismatched: got {v}",
+                self.key, self.expected, self.type_id, self.name
+            ))
+            .at(pointer)),
+            None => Err(AssertionFailure::new(format!(
+                "tag `{}` not set on `{}.{}`",
+                self.key, self.type_id, self.name
+            ))
+            .at(pointer)),
+        }
+    }
+    fn describe(&self) -> String {
+        let mut s = String::from("tag-equals ");
+        s.push_str(&self.type_id);
+        s.push('.');
+        s.push_str(&self.name);
+        s.push(':');
+        s.push_str(&self.key);
+        s
+    }
+}
+
+/// At least N resources of the given type exist. Lower-bound counterpart
+/// to ResourceCount (which is exact).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MinResourcesOfKind {
+    pub type_id: String,
+    pub min: usize,
+}
+
+impl MinResourcesOfKind {
+    #[must_use]
+    pub fn new(type_id: impl Into<String>, min: usize) -> Self {
+        Self {
+            type_id: type_id.into(),
+            min,
+        }
+    }
+}
+
+impl Assertion for MinResourcesOfKind {
+    fn check(&self, ctx: &AssertContext<'_>) -> Result<(), AssertionFailure> {
+        let by_name = ctx
+            .terraform_json
+            .pointer(&format!("/resource/{}", self.type_id))
+            .and_then(serde_json::Value::as_object);
+        let n = by_name.map_or(0, serde_json::Map::len);
+        if n >= self.min {
+            Ok(())
+        } else {
+            Err(AssertionFailure::new(format!(
+                "expected ≥{} resources of `{}`, got {n}",
+                self.min, self.type_id
+            ))
+            .at(format!("/resource/{}", self.type_id)))
+        }
+    }
+    fn describe(&self) -> String {
+        let mut s = String::from("min-resources-of-kind ");
+        s.push_str(&self.type_id);
+        s.push(' ');
+        s.push_str(&self.min.to_string());
+        s
+    }
+}
+
+/// `<type>.<name>.<attr>` references the given target resource. Catches
+/// wiring-typo regressions where an architecture was meant to reference
+/// X but ended up referencing Y.
+#[derive(Debug, Clone)]
+pub struct RefTargets {
+    pub source_type: String,
+    pub source_name: String,
+    pub source_attr: String,
+    pub target_type: String,
+    pub target_name: String,
+}
+
+impl RefTargets {
+    #[must_use]
+    pub fn new(
+        source_type: impl Into<String>,
+        source_name: impl Into<String>,
+        source_attr: impl Into<String>,
+        target_type: impl Into<String>,
+        target_name: impl Into<String>,
+    ) -> Self {
+        Self {
+            source_type: source_type.into(),
+            source_name: source_name.into(),
+            source_attr: source_attr.into(),
+            target_type: target_type.into(),
+            target_name: target_name.into(),
+        }
+    }
+}
+
+impl Assertion for RefTargets {
+    fn check(&self, ctx: &AssertContext<'_>) -> Result<(), AssertionFailure> {
+        let target_resource =
+            ctx.architecture.resources.iter().find(|r| {
+                r.type_id == self.source_type && r.name == self.source_name
+            });
+        let Some(resource) = target_resource else {
+            return Err(AssertionFailure::new(format!(
+                "source resource `{}.{}` not present",
+                self.source_type, self.source_name
+            ))
+            .at(format!(
+                "/resource/{}/{}",
+                self.source_type, self.source_name
+            )));
+        };
+        let val = resource.attributes.get(&self.source_attr.replace('-', "_"));
+        let Some(val) = val else {
+            return Err(AssertionFailure::new(format!(
+                "source attribute `{}.{}.{}` not set",
+                self.source_type, self.source_name, self.source_attr
+            )));
+        };
+        let mut refs = Vec::new();
+        walk_refs(val, &mut refs);
+        let matched = refs.iter().any(|r| {
+            r.type_id == self.target_type && r.name == self.target_name
+        });
+        if matched {
+            Ok(())
+        } else {
+            Err(AssertionFailure::new(format!(
+                "`{}.{}.{}` does not reference `{}.{}`",
+                self.source_type,
+                self.source_name,
+                self.source_attr,
+                self.target_type,
+                self.target_name
+            )))
+        }
+    }
+    fn describe(&self) -> String {
+        let mut s = String::from("ref-targets ");
+        s.push_str(&self.source_type);
+        s.push('.');
+        s.push_str(&self.source_name);
+        s.push('.');
+        s.push_str(&self.source_attr);
+        s.push_str(" → ");
+        s.push_str(&self.target_type);
+        s.push('.');
+        s.push_str(&self.target_name);
+        s
+    }
+}
+
 fn walk_refs(v: &lava_core::Value, out: &mut Vec<lava_core::ResourceRef>) {
     use lava_core::Value;
     match v {
