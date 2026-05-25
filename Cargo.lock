@@ -33,6 +33,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
+name = "lava-arch"
+version = "0.1.2"
+source = "git+https://github.com/pleme-io/lava-arch?branch=main#719375c6a769647da6b2abf79e968085bc6f1127"
+dependencies = [
+ "indexmap",
+ "lava-core",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "lava-core"
 version = "0.1.4"
 source = "git+https://github.com/pleme-io/lava-core?branch=main#bcc88e693f689ebb087de404499c536c63c59d37"
@@ -45,13 +57,49 @@ dependencies = [
 ]
 
 [[package]]
+name = "lava-eval"
+version = "0.1.5"
+source = "git+https://github.com/pleme-io/lava-eval?branch=main#0ea977c5168cea38a7e573bf531c53f80695ca5d"
+dependencies = [
+ "indexmap",
+ "lava-arch",
+ "lava-core",
+ "lava-schema",
+ "lava-types",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "lava-schema"
+version = "0.1.1"
+source = "git+https://github.com/pleme-io/lava-schema?branch=main#9366c7db071ac8476f3c75085281b6a6bec0168d"
+dependencies = [
+ "indexmap",
+ "lava-types",
+ "serde",
+ "thiserror",
+]
+
+[[package]]
 name = "lava-test"
 version = "0.1.0"
 dependencies = [
  "indexmap",
  "lava-core",
+ "lava-eval",
  "serde",
  "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "lava-types"
+version = "0.1.1"
+source = "git+https://github.com/pleme-io/lava-types?branch=main#961bf4c24eec994c4cd7557a5fc6a3522928c455"
+dependencies = [
+ "serde",
  "thiserror",
 ]
 

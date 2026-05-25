@@ -40,9 +40,11 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 pub mod assertions;
+pub mod parser;
 pub use assertions::{
     AttributeEquals, NoResource, OutputEquals, RefValid, ResourceCount, ResourceExists,
 };
+pub use parser::{test_from_form, tests_in_source, TestParseError};
 
 /// Context every assertion sees. Holds the architecture + its rendered
 /// terraform.json (lazily memoized so multiple assertions don't re-render).
