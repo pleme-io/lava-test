@@ -43,8 +43,8 @@ pub mod assertions;
 pub mod parser;
 pub mod spec;
 pub use assertions::{
-    AttributeEquals, MinResourcesOfKind, NoResource, OutputEquals, RefTargets, RefValid,
-    ResourceCount, ResourceExists, TagEquals,
+    AttributeEquals, MinResourcesOfKind, NoResource, OutputEquals, PropertyHolds, RefTargets,
+    RefValid, ResourceCount, ResourceExists, TagEquals,
 };
 pub use parser::{test_from_form, tests_in_source, TestParseError};
 pub use spec::scenarios_in_source;

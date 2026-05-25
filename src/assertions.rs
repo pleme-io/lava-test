@@ -460,6 +460,52 @@ impl Assertion for RefTargets {
     }
 }
 
+/// Closure-based property assertion. The predicate runs against the
+/// terraform.json shape; failure surfaces a typed AssertionFailure
+/// with the operator-supplied label.
+///
+/// Lets advanced test fixtures express assertions that the built-in
+/// variants don't cover (e.g. "every aws_subnet's cidr_block falls
+/// inside the parent VPC's cidr range").
+pub struct PropertyHolds {
+    pub label: String,
+    pub predicate: Box<dyn Fn(&serde_json::Value) -> Result<(), String> + Send + Sync>,
+}
+
+impl std::fmt::Debug for PropertyHolds {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("PropertyHolds")
+            .field("label", &self.label)
+            .finish()
+    }
+}
+
+impl PropertyHolds {
+    #[must_use]
+    pub fn new<F>(label: impl Into<String>, predicate: F) -> Self
+    where
+        F: Fn(&serde_json::Value) -> Result<(), String> + Send + Sync + 'static,
+    {
+        Self {
+            label: label.into(),
+            predicate: Box::new(predicate),
+        }
+    }
+}
+
+impl Assertion for PropertyHolds {
+    fn check(&self, ctx: &AssertContext<'_>) -> Result<(), AssertionFailure> {
+        (self.predicate)(&ctx.terraform_json).map_err(|msg| {
+            AssertionFailure::new(format!("`{}` did not hold: {msg}", self.label))
+        })
+    }
+    fn describe(&self) -> String {
+        let mut s = String::from("property ");
+        s.push_str(&self.label);
+        s
+    }
+}
+
 fn walk_refs(v: &lava_core::Value, out: &mut Vec<lava_core::ResourceRef>) {
     use lava_core::Value;
     match v {
@@ -630,6 +676,36 @@ mod tests {
         let ctx = AssertContext::from_architecture(&arch).unwrap();
         let err = RefValid.check(&ctx).unwrap_err();
         assert!(err.message.contains("aws_subnet.does_not_exist"));
+    }
+
+    #[test]
+    fn property_holds_runs_closure_against_terraform_json() {
+        let arch = tiny_vpc();
+        let ctx = AssertContext::from_architecture(&arch).unwrap();
+        let ok = PropertyHolds::new("vpc-cidr-present", |json| {
+            if json["resource"]["aws_vpc"]["main"]["cidr_block"].is_string() {
+                Ok(())
+            } else {
+                Err("cidr_block missing".into())
+            }
+        });
+        assert!(ok.check(&ctx).is_ok());
+    }
+
+    #[test]
+    fn property_holds_fails_with_typed_label_on_predicate_error() {
+        let arch = tiny_vpc();
+        let ctx = AssertContext::from_architecture(&arch).unwrap();
+        let nope = PropertyHolds::new("expects-fail", |_| Err("nope".into()));
+        let err = nope.check(&ctx).unwrap_err();
+        assert!(err.message.contains("expects-fail"));
+        assert!(err.message.contains("nope"));
+    }
+
+    #[test]
+    fn property_holds_describe_carries_label() {
+        let p = PropertyHolds::new("my-label", |_| Ok(()));
+        assert!(p.describe().contains("my-label"));
     }
 
     /// One TestCase composing multiple typed assertions through the
