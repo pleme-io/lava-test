@@ -93,7 +93,7 @@ dependencies = [
 
 [[package]]
 name = "lava-test"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "indexmap",
  "lava-core",
