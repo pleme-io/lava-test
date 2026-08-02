@@ -6,7 +6,7 @@ license = "MIT"
 name = "lava-test"
 readme = "README.md"
 repository = "https://github.com/pleme-io/lava-test"
-version = "0.1.8"
+version = "0.1.9"
 
 [lib]
 name = "lava_test"
