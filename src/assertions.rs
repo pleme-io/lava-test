@@ -242,7 +242,6 @@ pub struct RefValid;
 
 impl Assertion for RefValid {
     fn check(&self, ctx: &AssertContext<'_>) -> Result<(), AssertionFailure> {
-        use lava_core::Value;
         for r in &ctx.architecture.resources {
             for (attr, val) in &r.attributes {
                 let mut refs = Vec::new();
@@ -572,27 +571,40 @@ impl Assertion for PropertyHolds {
     }
 }
 
+/// Collect every [`ResourceRef`](lava_core::ResourceRef) reachable in a
+/// value, at any depth.
+///
+/// This used to bottom out in a `walk_json` helper over
+/// `serde_json::Value`, which could never find anything: by the time a
+/// value reached that arm every nested reference had already been
+/// projected to a `${…}` string, so `serde_json::Value` was structurally
+/// incapable of holding one. `RefValid` — the assertion that every
+/// reference points at a resource that exists — therefore only ever
+/// checked references sitting at the top level of an attribute, and
+/// silently passed every nested one.
+///
+/// `lava_core::Value` is now recursive and keeps references typed at
+/// depth, so this is a genuine walk and the assertion covers what it
+/// always claimed to.
 fn walk_refs(v: &lava_core::Value, out: &mut Vec<lava_core::ResourceRef>) {
     use lava_core::Value;
     match v {
         Value::Ref(r) => out.push(r.clone()),
-        Value::Json(json) => walk_json(json, out),
-    }
-}
-
-fn walk_json(v: &serde_json::Value, out: &mut Vec<lava_core::ResourceRef>) {
-    match v {
-        serde_json::Value::Array(items) => {
+        Value::List(items) => {
             for item in items {
-                walk_json(item, out);
+                walk_refs(item, out);
             }
         }
-        serde_json::Value::Object(map) => {
-            for (_, val) in map {
-                walk_json(val, out);
+        Value::Map(entries) => {
+            for val in entries.values() {
+                walk_refs(val, out);
             }
         }
-        _ => {}
+        Value::Null
+        | Value::Bool(_)
+        | Value::Int(_)
+        | Value::Float(_)
+        | Value::Str(_) => {}
     }
 }
 
