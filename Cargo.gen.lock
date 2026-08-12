@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "cargo_lock_sha256": "2f08ffcf5f7ada0f124baa5e19dc132f83bb1793310f5eaa725435283bc57094",
+  "cargo_lock_sha256": "7cdd344fad52c7f510af11e7f61c0b94d1d6c4c5e21ec0627a26bbcf6e01a4a9",
   "manifest_sha256": {
-    "Cargo.toml": "9ca2a28c3d19310c4c21141e9b2530b434457a109639a08c5a9943eecdd68881"
+    "Cargo.toml": "9ffe03bd81e9f8e326df797527a020fa056fcbb3390eedf0657b2fbe8ac07406"
   },
   "target_resolves": {
     "base": {
-      "aho-corasick-1.1.4": {
+      "aho-corasick-1.1.5": {
         "runtime_dependencies": [
           {
             "name": "memchr",
@@ -80,7 +80,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-arch-0.2.0-ecb9dedf799c5b9450d0224f7cc0f82ba28275da": {
+      "lava-arch-0.2.1": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -96,7 +96,7 @@
           },
           {
             "name": "lava_core",
-            "package_key": "lava-core-0.2.1-cfddce8aba34b5d7e6fd9e3616ea4ce48783beae",
+            "package_key": "lava-core-0.2.2",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -128,7 +128,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.19",
+            "package_key": "thiserror-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -140,7 +140,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-core-0.2.1-cfddce8aba34b5d7e6fd9e3616ea4ce48783beae": {
+      "lava-core-0.2.2": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -190,7 +190,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.19",
+            "package_key": "thiserror-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -202,7 +202,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-eval-0.2.0-b0a628d64e878f221808b7c00846f3c2b229f8df": {
+      "lava-eval-0.2.1": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -218,7 +218,7 @@
           },
           {
             "name": "lava_arch",
-            "package_key": "lava-arch-0.2.0-ecb9dedf799c5b9450d0224f7cc0f82ba28275da",
+            "package_key": "lava-arch-0.2.1",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -228,7 +228,7 @@
           },
           {
             "name": "lava_core",
-            "package_key": "lava-core-0.2.1-cfddce8aba34b5d7e6fd9e3616ea4ce48783beae",
+            "package_key": "lava-core-0.2.2",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -280,7 +280,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.19",
+            "package_key": "thiserror-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -330,7 +330,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.19",
+            "package_key": "thiserror-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -342,7 +342,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-test-0.2.0": {
+      "lava-test-0.2.1": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -358,7 +358,7 @@
           },
           {
             "name": "lava_core",
-            "package_key": "lava-core-0.2.1-cfddce8aba34b5d7e6fd9e3616ea4ce48783beae",
+            "package_key": "lava-core-0.2.2",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -368,7 +368,7 @@
           },
           {
             "name": "lava_eval",
-            "package_key": "lava-eval-0.2.0-b0a628d64e878f221808b7c00846f3c2b229f8df",
+            "package_key": "lava-eval-0.2.1",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -410,7 +410,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.19",
+            "package_key": "thiserror-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -438,7 +438,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.19",
+            "package_key": "thiserror-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -500,7 +500,7 @@
         "runtime_dependencies": [
           {
             "name": "aho_corasick",
-            "package_key": "aho-corasick-1.1.4",
+            "package_key": "aho-corasick-1.1.5",
             "kind": "normal",
             "features": [],
             "uses_default_features": false,
@@ -520,7 +520,7 @@
           },
           {
             "name": "regex_automata",
-            "package_key": "regex-automata-0.4.16",
+            "package_key": "regex-automata-0.4.18",
             "kind": "normal",
             "features": [
               "alloc",
@@ -565,11 +565,11 @@
           "unicode-segment"
         ]
       },
-      "regex-automata-0.4.16": {
+      "regex-automata-0.4.18": {
         "runtime_dependencies": [
           {
             "name": "aho_corasick",
-            "package_key": "aho-corasick-1.1.4",
+            "package_key": "aho-corasick-1.1.5",
             "kind": "normal",
             "features": [],
             "uses_default_features": false,
@@ -894,11 +894,11 @@
           "proc-macro"
         ]
       },
-      "thiserror-2.0.19": {
+      "thiserror-2.0.20": {
         "runtime_dependencies": [
           {
             "name": "thiserror_impl",
-            "package_key": "thiserror-impl-2.0.19",
+            "package_key": "thiserror-impl-2.0.20",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -913,7 +913,7 @@
           "std"
         ]
       },
-      "thiserror-impl-2.0.19": {
+      "thiserror-impl-2.0.20": {
         "runtime_dependencies": [
           {
             "name": "proc_macro2",
@@ -987,7 +987,7 @@
     }
   },
   "per_crate": {
-    "aho-corasick-1.1.4": {
+    "aho-corasick-1.1.5": {
       "edition": "2021"
     },
     "equivalent-1.0.2": {
@@ -1002,31 +1002,19 @@
     "itoa-1.0.18": {
       "edition": "2021"
     },
-    "lava-arch-0.2.0-ecb9dedf799c5b9450d0224f7cc0f82ba28275da": {
-      "edition": "2024",
-      "lib_target": {
-        "name": "lava_arch",
-        "path": "src/lib.rs"
-      }
+    "lava-arch-0.2.1": {
+      "edition": "2024"
     },
-    "lava-core-0.2.1-cfddce8aba34b5d7e6fd9e3616ea4ce48783beae": {
-      "edition": "2024",
-      "lib_target": {
-        "name": "lava_core",
-        "path": "src/lib.rs"
-      }
+    "lava-core-0.2.2": {
+      "edition": "2024"
     },
-    "lava-eval-0.2.0-b0a628d64e878f221808b7c00846f3c2b229f8df": {
-      "edition": "2024",
-      "lib_target": {
-        "name": "lava_eval",
-        "path": "src/lib.rs"
-      }
+    "lava-eval-0.2.1": {
+      "edition": "2024"
     },
     "lava-schema-0.1.7": {
       "edition": "2024"
     },
-    "lava-test-0.2.0": {
+    "lava-test-0.2.1": {
       "edition": "2024",
       "lib_target": {
         "name": "lava_test",
@@ -1050,7 +1038,7 @@
     "regex-1.13.1": {
       "edition": "2021"
     },
-    "regex-automata-0.4.16": {
+    "regex-automata-0.4.18": {
       "edition": "2021"
     },
     "regex-syntax-0.8.11": {
@@ -1081,11 +1069,11 @@
     "syn-3.0.3": {
       "edition": "2021"
     },
-    "thiserror-2.0.19": {
+    "thiserror-2.0.20": {
       "edition": "2021",
       "build_script": "build.rs"
     },
-    "thiserror-impl-2.0.19": {
+    "thiserror-impl-2.0.20": {
       "edition": "2021",
       "proc_macro": true
     },
@@ -1110,10 +1098,6 @@
       "build_script": "build.rs"
     }
   },
-  "git_nar_sha256": {
-    "lava-arch-0.2.0-ecb9dedf799c5b9450d0224f7cc0f82ba28275da": "sha256-ktqhs0AUWCXbs9A/MR+xqVwe6CBE/PTeU3wfI+sFYjk=",
-    "lava-core-0.2.1-cfddce8aba34b5d7e6fd9e3616ea4ce48783beae": "sha256-BNRpvPO0r5cKusks0dK4bUfxmrrg0lTF6uw9WMdK6eI=",
-    "lava-eval-0.2.0-b0a628d64e878f221808b7c00846f3c2b229f8df": "sha256-vSdCeGqd18skmqjmmUu2LqSbnFUZO+easdMQWsT2xyE="
-  },
+  "git_nar_sha256": {},
   "flake_metadata": {}
 }
