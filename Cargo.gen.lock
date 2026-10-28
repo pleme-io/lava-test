@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "cargo_lock_sha256": "7cdd344fad52c7f510af11e7f61c0b94d1d6c4c5e21ec0627a26bbcf6e01a4a9",
+  "cargo_lock_sha256": "f15927573b19db8ba2cc2d38af1fee3cece4411bbc0ce2e90f95003655f111f3",
   "manifest_sha256": {
     "Cargo.toml": "9ffe03bd81e9f8e326df797527a020fa056fcbb3390eedf0657b2fbe8ac07406"
   },
@@ -80,7 +80,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-arch-0.2.1": {
+      "lava-arch-0.2.5": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -96,7 +96,7 @@
           },
           {
             "name": "lava_core",
-            "package_key": "lava-core-0.2.2",
+            "package_key": "lava-core-0.2.5",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -140,7 +140,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-core-0.2.2": {
+      "lava-core-0.2.5": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -179,8 +179,8 @@
             "tree": "target"
           },
           {
-            "name": "serde_yaml",
-            "package_key": "serde_yaml-0.9.34+deprecated",
+            "name": "serde_norway",
+            "package_key": "serde_norway-0.9.42",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -202,7 +202,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-eval-0.2.1": {
+      "lava-eval-0.2.10": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -218,7 +218,7 @@
           },
           {
             "name": "lava_arch",
-            "package_key": "lava-arch-0.2.1",
+            "package_key": "lava-arch-0.2.5",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -228,7 +228,7 @@
           },
           {
             "name": "lava_core",
-            "package_key": "lava-core-0.2.2",
+            "package_key": "lava-core-0.2.5",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -358,7 +358,7 @@
           },
           {
             "name": "lava_core",
-            "package_key": "lava-core-0.2.2",
+            "package_key": "lava-core-0.2.5",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -368,7 +368,7 @@
           },
           {
             "name": "lava_eval",
-            "package_key": "lava-eval-0.2.1",
+            "package_key": "lava-eval-0.2.10",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -795,7 +795,7 @@
           "std"
         ]
       },
-      "serde_yaml-0.9.34+deprecated": {
+      "serde_norway-0.9.42": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
@@ -838,8 +838,8 @@
             "tree": "target"
           },
           {
-            "name": "unsafe_libyaml",
-            "package_key": "unsafe-libyaml-0.2.11",
+            "name": "unsafe_libyaml_norway",
+            "package_key": "unsafe-libyaml-norway-0.2.15",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -954,7 +954,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "unsafe-libyaml-0.2.11": {
+      "unsafe-libyaml-norway-0.2.15": {
         "runtime_dependencies": [],
         "build_dependencies": [],
         "features": []
@@ -1002,13 +1002,13 @@
     "itoa-1.0.18": {
       "edition": "2021"
     },
-    "lava-arch-0.2.1": {
+    "lava-arch-0.2.5": {
       "edition": "2024"
     },
-    "lava-core-0.2.2": {
+    "lava-core-0.2.5": {
       "edition": "2024"
     },
-    "lava-eval-0.2.1": {
+    "lava-eval-0.2.10": {
       "edition": "2024"
     },
     "lava-schema-0.1.7": {
@@ -1063,7 +1063,7 @@
       "edition": "2021",
       "build_script": "build.rs"
     },
-    "serde_yaml-0.9.34+deprecated": {
+    "serde_norway-0.9.42": {
       "edition": "2021"
     },
     "syn-3.0.3": {
@@ -1080,7 +1080,7 @@
     "unicode-ident-1.0.24": {
       "edition": "2021"
     },
-    "unsafe-libyaml-0.2.11": {
+    "unsafe-libyaml-norway-0.2.15": {
       "edition": "2021",
       "binaries": [
         {
