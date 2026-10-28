@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "cargo_lock_sha256": "f15927573b19db8ba2cc2d38af1fee3cece4411bbc0ce2e90f95003655f111f3",
+  "cargo_lock_sha256": "10b4010d101b67de526b4a156a0fbe3d874b49c03fa2936ebe8cb04025938868",
   "manifest_sha256": {
-    "Cargo.toml": "9ffe03bd81e9f8e326df797527a020fa056fcbb3390eedf0657b2fbe8ac07406"
+    "Cargo.toml": "ee88dc268db0747dc686eb92b1e2d87987aa976091cdd7ea29829acca1022db0"
   },
   "target_resolves": {
     "base": {
@@ -25,7 +25,12 @@
           "std"
         ]
       },
-      "equivalent-1.0.2": {
+      "equivalent-1.0.3": {
+        "runtime_dependencies": [],
+        "build_dependencies": [],
+        "features": []
+      },
+      "foldhash-0.2.0": {
         "runtime_dependencies": [],
         "build_dependencies": [],
         "features": []
@@ -35,11 +40,11 @@
         "build_dependencies": [],
         "features": []
       },
-      "indexmap-2.14.0": {
+      "indexmap-2.14.2": {
         "runtime_dependencies": [
           {
             "name": "equivalent",
-            "package_key": "equivalent-1.0.2",
+            "package_key": "equivalent-1.0.3",
             "kind": "normal",
             "features": [],
             "uses_default_features": false,
@@ -80,11 +85,11 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-arch-0.2.5": {
+      "lava-arch-0.2.6": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "package_key": "indexmap-2.14.2",
             "kind": "normal",
             "features": [
               "serde"
@@ -118,7 +123,7 @@
           },
           {
             "name": "serde_json",
-            "package_key": "serde_json-1.0.151",
+            "package_key": "serde_json-1.0.154",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -128,7 +133,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.20",
+            "package_key": "thiserror-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -144,7 +149,7 @@
         "runtime_dependencies": [
           {
             "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "package_key": "indexmap-2.14.2",
             "kind": "normal",
             "features": [
               "serde"
@@ -168,7 +173,7 @@
           },
           {
             "name": "serde_json",
-            "package_key": "serde_json-1.0.151",
+            "package_key": "serde_json-1.0.154",
             "kind": "normal",
             "features": [
               "preserve_order"
@@ -190,7 +195,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.20",
+            "package_key": "thiserror-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -202,11 +207,11 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-eval-0.2.10": {
+      "lava-eval-0.2.11": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "package_key": "indexmap-2.14.2",
             "kind": "normal",
             "features": [
               "serde"
@@ -218,7 +223,7 @@
           },
           {
             "name": "lava_arch",
-            "package_key": "lava-arch-0.2.5",
+            "package_key": "lava-arch-0.2.6",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -238,7 +243,7 @@
           },
           {
             "name": "lava_schema",
-            "package_key": "lava-schema-0.1.7",
+            "package_key": "lava-schema-0.1.8",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -270,7 +275,7 @@
           },
           {
             "name": "serde_json",
-            "package_key": "serde_json-1.0.151",
+            "package_key": "serde_json-1.0.154",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -280,7 +285,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.20",
+            "package_key": "thiserror-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -292,11 +297,11 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-schema-0.1.7": {
+      "lava-schema-0.1.8": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "package_key": "indexmap-2.14.2",
             "kind": "normal",
             "features": [
               "serde"
@@ -330,7 +335,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.20",
+            "package_key": "thiserror-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -342,11 +347,11 @@
         "build_dependencies": [],
         "features": []
       },
-      "lava-test-0.2.1": {
+      "lava-test-0.2.2": {
         "runtime_dependencies": [
           {
             "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "package_key": "indexmap-2.14.2",
             "kind": "normal",
             "features": [
               "serde"
@@ -368,7 +373,7 @@
           },
           {
             "name": "lava_eval",
-            "package_key": "lava-eval-0.2.10",
+            "package_key": "lava-eval-0.2.11",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -400,7 +405,7 @@
           },
           {
             "name": "serde_json",
-            "package_key": "serde_json-1.0.151",
+            "package_key": "serde_json-1.0.154",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -410,7 +415,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.20",
+            "package_key": "thiserror-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -438,7 +443,7 @@
           },
           {
             "name": "thiserror",
-            "package_key": "thiserror-2.0.20",
+            "package_key": "thiserror-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -462,7 +467,7 @@
         "runtime_dependencies": [
           {
             "name": "unicode_ident",
-            "package_key": "unicode-ident-1.0.24",
+            "package_key": "unicode-ident-1.0.27",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -682,6 +687,7 @@
         "runtime_dependencies": [],
         "build_dependencies": [],
         "features": [
+          "alloc",
           "result",
           "std"
         ]
@@ -714,7 +720,7 @@
           },
           {
             "name": "syn",
-            "package_key": "syn-3.0.3",
+            "package_key": "syn-3.0.9",
             "kind": "normal",
             "features": [
               "clone-impls",
@@ -734,14 +740,24 @@
           "default"
         ]
       },
-      "serde_json-1.0.151": {
+      "serde_json-1.0.154": {
         "runtime_dependencies": [
           {
-            "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "name": "foldhash",
+            "package_key": "foldhash-0.2.0",
             "kind": "normal",
             "features": [],
-            "uses_default_features": true,
+            "uses_default_features": false,
+            "optional": true,
+            "target": null,
+            "tree": "target"
+          },
+          {
+            "name": "indexmap",
+            "package_key": "indexmap-2.14.2",
+            "kind": "normal",
+            "features": [],
+            "uses_default_features": false,
             "optional": true,
             "target": null,
             "tree": "target"
@@ -789,6 +805,7 @@
         ],
         "build_dependencies": [],
         "features": [
+          "alloc",
           "default",
           "indexmap",
           "preserve_order",
@@ -799,7 +816,7 @@
         "runtime_dependencies": [
           {
             "name": "indexmap",
-            "package_key": "indexmap-2.14.0",
+            "package_key": "indexmap-2.14.2",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -851,7 +868,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "syn-3.0.3": {
+      "syn-3.0.9": {
         "runtime_dependencies": [
           {
             "name": "proc_macro2",
@@ -875,7 +892,7 @@
           },
           {
             "name": "unicode_ident",
-            "package_key": "unicode-ident-1.0.24",
+            "package_key": "unicode-ident-1.0.27",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -894,11 +911,11 @@
           "proc-macro"
         ]
       },
-      "thiserror-2.0.20": {
+      "thiserror-2.0.21": {
         "runtime_dependencies": [
           {
             "name": "thiserror_impl",
-            "package_key": "thiserror-impl-2.0.20",
+            "package_key": "thiserror-impl-2.0.21",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -913,7 +930,7 @@
           "std"
         ]
       },
-      "thiserror-impl-2.0.20": {
+      "thiserror-impl-2.0.21": {
         "runtime_dependencies": [
           {
             "name": "proc_macro2",
@@ -937,7 +954,7 @@
           },
           {
             "name": "syn",
-            "package_key": "syn-3.0.3",
+            "package_key": "syn-3.0.9",
             "kind": "normal",
             "features": [],
             "uses_default_features": true,
@@ -949,7 +966,7 @@
         "build_dependencies": [],
         "features": []
       },
-      "unicode-ident-1.0.24": {
+      "unicode-ident-1.0.27": {
         "runtime_dependencies": [],
         "build_dependencies": [],
         "features": []
@@ -990,31 +1007,34 @@
     "aho-corasick-1.1.5": {
       "edition": "2021"
     },
-    "equivalent-1.0.2": {
+    "equivalent-1.0.3": {
       "edition": "2015"
+    },
+    "foldhash-0.2.0": {
+      "edition": "2021"
     },
     "hashbrown-0.17.1": {
       "edition": "2024"
     },
-    "indexmap-2.14.0": {
+    "indexmap-2.14.2": {
       "edition": "2024"
     },
     "itoa-1.0.18": {
       "edition": "2021"
     },
-    "lava-arch-0.2.5": {
+    "lava-arch-0.2.6": {
       "edition": "2024"
     },
     "lava-core-0.2.5": {
       "edition": "2024"
     },
-    "lava-eval-0.2.10": {
+    "lava-eval-0.2.11": {
       "edition": "2024"
     },
-    "lava-schema-0.1.7": {
+    "lava-schema-0.1.8": {
       "edition": "2024"
     },
-    "lava-test-0.2.1": {
+    "lava-test-0.2.2": {
       "edition": "2024",
       "lib_target": {
         "name": "lava_test",
@@ -1059,25 +1079,25 @@
       "edition": "2021",
       "proc_macro": true
     },
-    "serde_json-1.0.151": {
+    "serde_json-1.0.154": {
       "edition": "2021",
       "build_script": "build.rs"
     },
     "serde_norway-0.9.42": {
       "edition": "2021"
     },
-    "syn-3.0.3": {
+    "syn-3.0.9": {
       "edition": "2021"
     },
-    "thiserror-2.0.20": {
+    "thiserror-2.0.21": {
       "edition": "2021",
       "build_script": "build.rs"
     },
-    "thiserror-impl-2.0.20": {
+    "thiserror-impl-2.0.21": {
       "edition": "2021",
       "proc_macro": true
     },
-    "unicode-ident-1.0.24": {
+    "unicode-ident-1.0.27": {
       "edition": "2021"
     },
     "unsafe-libyaml-norway-0.2.15": {
